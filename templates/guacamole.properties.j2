@@ -1,0 +1,17 @@
+guacd-hostname localhost
+guad-port 4822
+
+# MySQL properties
+mysql-hostname: localhost
+mysql-port: 3306
+mysql-database: {{ guac_dbname }}
+mysql-username: {{ guac_dbuser }}
+mysql-password: {{ guac_dbpass }}
+
+# Active Directory
+ldap-hostname: '{{guac_ldap_hostname}}'
+ldap-port: '{{ guac_ldap_port }}'
+ldap-user-base-dn: '{{ guac_ldap_user_base_dn }}'
+ldap-search-bind-dn: '{{ guac_ldap_search_bind_dn }}'
+ldap-search-bind-password: '{{ guac_ldap_search_bind_dn_pass }}'
+ldap-username-attribute: sAMAccountName

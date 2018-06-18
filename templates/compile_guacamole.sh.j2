@@ -1,0 +1,10 @@
+configure --with-init-dir=/etc/init.d#!/bin/bash
+
+# Bash script to compile guacamole
+
+cd ../guacamole-server*/
+sudo ./configure --with-init-dir=/etc/init.d
+make
+make install
+ldconfig
+update-rc.d guacd defaults

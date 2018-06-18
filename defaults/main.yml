@@ -1,0 +1,27 @@
+---
+  # defaults file for ansible-role-guacamole
+
+
+  # Guacamole source(s)
+  guac_server_src               : http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/0.9.14/source/guacamole-server-0.9.14.tar.gz
+  guac_client_src               : http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/0.9.14/binary/guacamole-0.9.14.war
+  guac_client_dst               : /opt/ansible/projects/guacamole/resources/guacamole-0.9.14.war
+  guac_server_tar               : guacamole-server-0.9.14.tar.gz
+  guac_server_dir               : /opt/ansible/projects/guacamole
+
+  # Additional Connectors
+  guac_mysql_conn_url           : http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/0.9.14/binary/guacamole-auth-jdbc-0.9.14.tar.gz
+  guac_mysql_conn_java_url      : http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.42.tar.gz
+  guac_ldap_conn_url            : http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/0.9.14/binary/guacamole-auth-ldap-0.9.14.tar.gz
+  
+  # Mysql default veriable(s)
+  guac_dbname                   : guacamole
+  guac_dbuser                   : guacamole
+  guac_dbpass                   : Guacamole123
+  
+  # Ldap default settings
+  guac_ldap_hostname            : 192.168.0.67
+  guac_ldap_port                : 389
+  guac_ldap_user_base_dn        : ou=users,ou=bitfinity,dc=bitfinity,dc=net
+  guac_ldap_search_bind_dn      : cn=mailadmin,ou=Service Accounts,ou=Users,ou=bitfinity,dc=bitfinity,dc=net
+  guac_ldap_search_bind_dn_pass : CasSemIsa02
