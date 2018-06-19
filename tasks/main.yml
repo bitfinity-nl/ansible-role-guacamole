@@ -28,6 +28,7 @@
       - libcairo2-dev
       - libjpeg-turbo8-dev
 #      - libpng12-dev
+      - libpng-dev
       - libossp-uuid-dev
       - libavcodec-dev
       - libavutil-dev
@@ -48,10 +49,8 @@
       - wget
       - curl
       - haveged
-#     - mysql-server
-#     - mysql-client
-#     - mysql-common
-#     - mysql-utilities
+      - gcc-6
+      - g++-6
 
   - name: "stop tomcat service"
     systemd:
@@ -80,21 +79,22 @@
   - name: "Transfer compile_guacamole.sh.j2 template to /opt/ansible/projects/guacamole/scripts/compile_guacamole.sh.j2"
     template:
       src: compile_guacamole.sh.j2
-      dest: /opt/ansible/projects/guacamole/scripts/compile_guacamole.sh
+      dest: "{{ guac_server_dir_unpack }}/compile_guacamole.sh"
       mode: 0755
   
   - name: "Execute compile_guacamole.sh"
-    raw: sudo bash /opt/ansible/projects/guacamole/scripts/compile_guacamole.sh
+    raw: sudo bash "{{ guac_server_dir_unpack }}/compile_guacamole.sh"
 
-  
   - name: "Create guacamole directory's"
     file:
       path: "{{ item }}"
       state: directory
+      mode: 0755
     with_items:
       - /etc/guacamole
       - /etc/guacamole/lib
       - /etc/guacamole/extensions
+#      - /usr/share/tomcat8/.guacamole
 
   - name: "Create tomcat directory /usr/share/tomcat8"
     file:
@@ -109,7 +109,7 @@
   
   - name: "Create symlink from /etc/guacamole/guacamole.properties to /usr/share/tomcat8/.guacamole"
     file:
-      path: /etc/guacamole/guacamole.properties
+      src: /etc/guacamole/guacamole.properties
       dest: /usr/share/tomcat8/.guacamole
       state: link
   
@@ -122,7 +122,7 @@
   - name: "Start guac and tomcat service"
     systemd:
       name: "{{ item }}"
-      state: start
+      state: started
     with_items:
       - guacd
       - tomcat8 
