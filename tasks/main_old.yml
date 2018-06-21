@@ -1,0 +1,162 @@
+---
+  # Title: ansible-role-guacamole
+  #
+  # Author: Luc Rutten
+  # File tasks/main.yml
+  #
+  # Description:
+  #   Apache Guacamole is a clientless remote desktop gateway.
+  #
+  # Depends on: 
+  #   MySQL 5.7
+  
+  
+   - name: "Create initial Guacamole MySQL database"
+    mysql_db:
+      name: "{{ guac_dbname }}"
+      encoding: utf8
+      state: present
+      login_user: "{{ MySQL_ROOT_ACCOUNT }}"
+      login_password: "{{ MySQL_ROOT_PASSWORD }}"
+
+  - name: "Create Guacamole MySQL database user"
+    mysql_user:
+      name: "{{ guac_dbuser }}"
+      password: "{{ guac_dbpass }}"
+      priv: "{{ guac_dbname }}.*:ALL,GRANT"
+      state: present
+      login_user: "{{ MySQL_ROOT_ACCOUNT }}"
+      login_password: "{{ MySQL_ROOT_PASSWORD }}"
+
+      
+
+
+  - name: "Install packages"
+    apt:
+      name: "{{ item }}"
+      update_cache: yes
+      state: present
+    with_items:
+      - build-essential 
+      - gcc-6
+      - g++-6
+      - libcairo2-dev
+      - libjpeg-turbo8-dev
+#      - libpng12-dev
+      - libpng-dev
+      - libossp-uuid-dev
+      - libavcodec-dev
+      - libavutil-dev
+      - libswscale-dev
+      - libfreerdp-dev
+      - libpango1.0-dev
+      - libssh2-1-dev
+      - libtelnet-dev
+      - libvncserver-dev
+      - libpulse-dev
+      - libssl-dev
+      - libvorbis-dev
+      - libwebp-dev
+      - tomcat8 
+      - freerdp-x11
+      - ghostscript
+      - jq
+      - wget
+      - curl
+      - haveged
+
+  - name: "stop tomcat service"
+    systemd:
+      name: tomcat8
+      state: stopped
+
+  - name: "Transfer file tomcat8 /etc/default/tomcat8 (set guacamole_home)"
+    copy:
+      src: tomcat8
+      dest: /etc/default/tomcat8
+
+  - name: "Download source files"
+    get_url:
+      url: "{{ item.src }}"
+      dest: "{{ item.dst }}"
+    with_items:
+      - { src: '{{ guac_client_src }}', dst: '{{ guac_client_dst }}' }
+      - { src: '{{ guac_server_src }}', dst: '/opt/ansible/projects/guacamole/resources' }
+
+  - name: "Unpack source files"
+    unarchive: 
+      src: "/opt/ansible/projects/guacamole/resources/{{ guac_server_tar }}"
+      dest: "{{ guac_server_dir }}"
+      remote_src: yes 
+
+  - name: "Transfer compile_guacamole.sh.j2 template to /opt/ansible/projects/guacamole/scripts/compile_guacamole.sh.j2"
+    template:
+      src: compile_guacamole.sh.j2
+      dest: "{{ guac_server_dir_unpack }}/compile_guacamole.sh"
+      mode: 0755
+  
+  - name: "Execute compile_guacamole.sh"
+    raw: sudo bash "{{ guac_server_dir_unpack }}/compile_guacamole.sh"
+
+  - name: "Create guacamole directory's"
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: 0755
+    with_items:
+      - /etc/guacamole
+      - /etc/guacamole/lib
+      - /etc/guacamole/extensions
+#      - /usr/share/tomcat8/.guacamole
+
+  - name: "Create tomcat directory /usr/share/tomcat8"
+    file:
+      path: /usr/share/tomcat8
+      state: directory
+
+  - name: "Transfer guacamole.properties.j2 to /etc/guacamole/guacamole.properties"
+    template:
+      src: guacamole.properties.j2
+      dest: /etc/guacamole/guacamole.properties
+      mode: 0755
+  
+  - name: "Create symlink from /etc/guacamole/guacamole.properties to /usr/share/tomcat8/.guacamole"
+    file:
+      src: /etc/guacamole/guacamole.properties
+      dest: /usr/share/tomcat8/.guacamole
+      state: link
+  
+  - name: "Copy war files tomcat webapps"
+    copy:
+      src: "{{ guac_client_dst }}"
+      dest: /var/lib/tomcat8/webapps/guacamole.war
+      remote_src: yes
+  
+  - name: "Start guac and tomcat service"
+    systemd:
+      name: "{{ item }}"
+      state: started
+    with_items:
+      - guacd
+      - tomcat8 
+
+
+  - name: "Download mysql & ldap guacamole connectors"
+    get_url:
+      url: "{{ item.src }}"
+      dest: "{{ item.dest }}" 
+      mode: 0755
+    with_items:
+      - { src: '{{ guac_mysql_conn_url }}', dest: '/etc/guacamole/extensions/' }
+      - { src: '{{ guac_mysql_conn_java_url }}', dest: '/etc/guacamole/lib/' }
+      - { src: '{{ guac_ldap_conn_url }}', dest: '/etc/guacamole/extensions/' }
+
+  - name: "Restart guac en tomcat8 services"
+    systemd:
+      name: "{{ item }}"
+      state: restarted
+      enabled: yes
+    with_items:
+      - guacd
+      - tomcat8
+      

@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Bash script to compile guacamole
-
-#cd ../guacamole-server*/
 cc="gcc-6" ./configure --with-init-dir=/etc/init.d
 make CC=gcc-6
 make install
