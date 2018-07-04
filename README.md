@@ -1,10 +1,10 @@
-Role Name
-=========
+ansible-role-guacamole
+======================
 
 Apache Guacamole is a clientless remote desktop gateway.
 It supports standard protocols like VNC, RDP, and SSH.
 
-This role will the install it  on Ubuntu. 
+This role will install Guacamole on Ubuntu. 
 
 Requirements
 ------------
@@ -63,12 +63,19 @@ Oracle mysql connector java
 -  guac_mysql_conn_java_dst
 -  #guac_mysql_conn_java_file
 
+
+
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+This Role depends on MySQL server 5.7, you can use your own role or my role.
 
-- My
+- ansible-role-mysql-server-5.7 
+
+Use the following Variables to provide the administrative MySQL credentials.
+
+- MySQL_ROOT_ACCOUNT
+- MySQL_ROOT_PASSWORD
 
 
 
@@ -102,7 +109,6 @@ Example Playbook
       roles:
         - ansible-role-mysql-server-5.7
         - ansible-role-guacamole
-
 
 
 
