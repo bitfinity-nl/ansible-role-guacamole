@@ -26,12 +26,12 @@
       - /usr/share/tomcat8
       - /usr/share/tomcat8/.guacamole
       
-  - name: "Install packages"
-    apt:
-      name: "{{ item }}"
-      update_cache: yes
+  - name: "Add xenial repository for package libpng12-dev"
+    apt_repository:
+      repo: 'deb http://archive.ubuntu.com/ubuntu xenial main restricted universe multiverse'
+      filename: xenial.list 
       state: present
-    with_items:
+
   - name: "Install packages"
     apt:
       name: "{{ item }}"
@@ -43,8 +43,7 @@
       - g++-6
       - libcairo2-dev
       - libjpeg-turbo8-dev
-#      - libpng12-dev
-      - libpng-dev
+      - libpng12-dev
       - libossp-uuid-dev
       - libavcodec-dev
       - libavutil-dev
@@ -62,8 +61,6 @@
       - freerdp-x11
       - ghostscript
       - jq
- #     - wget
- #     - curl
       - haveged
       
   - name: "stop tomcat service"
@@ -74,11 +71,12 @@
   - name: "Transfer templates files to the specified directories"
     template:
       src: "{{ item.src }}"
-      dest: "{{ item.dst }}"
+      dest: "{{ item.dest }}"
       backup: yes
     with_items:
       - { src: 'tomcat8.j2', dest: '/etc/default/tomcat8' }
       - { src: 'guacamole.properties.j2', dest: '/etc/guacamole/guacamole.properties' }
+      - { src: 'gmt.cnf.j2', dest: '/etc/mysql/mysql.conf.d/gmt.cnf' }
 
   - name: "Create symlink from /etc/guacamole/guacamole.properties to /usr/share/tomcat8/.guacamole/guacamole.properties"
     file:
@@ -97,10 +95,10 @@
   - name: "Unarchive guacamole server files"
     unarchive: 
       src: "{{ guac_server_dir }}/{{ guac_server_tar }}"
-      dest: "{{ guac_server_dir_unpacked }}"
+      dest: "{{ guac_server_dir }}"
       remote_src: yes
  
-    - name: "Create initial Guacamole MySQL database"
+  - name: "Create initial Guacamole MySQL database"
     mysql_db:
       name: "{{ guac_dbname }}"
       encoding: utf8
@@ -116,30 +114,68 @@
       state: present
       login_user: "{{ MySQL_ROOT_ACCOUNT }}"
       login_password: "{{ MySQL_ROOT_PASSWORD }}"
-      
-  - name: "Transfer compile.sh.j2 template to {{ guac_server_dir_unpack }}/compile.sh"
-    template:
-      src: compile.sh.j2
-      dest: "{{ guac_server_dir_unpack }}/compile.sh"
-      mode: 0755
-  
-  - name: "Execute compile.sh"
-    raw: sudo bash "{{ guac_server_dir_unpack }}/compile.sh"
-  
+
+  - name: "Running ./configure for Guacamole"
+    command: '"{{ item }}" cc="gcc-6" chdir="{{ guac_server_dir_unpacked }}/" --with-init-dir=/etc/init.d'
+    with_items:
+      - ./configure
+
+  - name: "Running make for Guacamole"
+    command: '"{{ item }}" CC=gcc-6 chdir="{{ guac_server_dir_unpacked }}/"'
+    with_items:
+      - make
+
+  - name: "Running make install for Guacamole"
+    command: 'make install chdir="{{ guac_server_dir_unpacked }}/"'
+
+  - name: "Run ldconfig for Guacamole"
+    command: 'ldconfig'
+
   - name: "Download and unarchive files connectors"
     unarchive:
-      url: "{{ item.src }}"
-      dest: "{{ item.dst }}"
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
       remote_src: yes
     with_items:
       - { src: '{{ guac_mysql_conn_src }}', dest: '{{ guac_mysql_conn_dst }}' }
-#      - { src: '{{ guac_mysql_conn_java_src }}', dest: '{{ guac_mysql_conn_java_dst }}' }
       - { src: '{{ guac_ldap_conn_src }}', dest: '{{ guac_ldap_conn_dst }}' }
 
+  - name: "Transfer files form unarchived folder to correct location"
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      remote_src: yes
+    with_items:
+      - { src: '{{ guac_mysql_conn_file }}', dest: '{{ guac_mysql_conn_dst }}' }
+      - { src: '{{ guac_ldap_conn_file }}', dest: '{{ guac_ldap_conn_dst }}' }
+
+  - name: "Import MySQL database schemas"
+    mysql_db:
+      state: import
+      name: "{{ guac_dbname }}"
+      login_user: "{{ guac_dbuser }}"
+      login_password: "{{ guac_dbpass }}"
+      target: "{{ item }}"
+    with_items:
+      - "{{ guac_mysql_conn_src_schema }}/001-create-schema.sql"
+      - "{{ guac_mysql_conn_src_schema }}/002-create-admin-user.sql"
+    ignore_errors: yes    
+      
   - name: "Download and unarchive files connectors"      
     apt:
       deb: "{{ guac_mysql_conn_java_src }}"
-      
+
+  - name: "Copy from /usr/share/java/mysql-connector-java-8.0.11.jar to {{ guac_mysql_conn_java_dst }}" 
+    copy:
+      src: /usr/share/java/mysql-connector-java-8.0.11.jar
+      dest: "{{ guac_mysql_conn_java_dst }}/mysql-connector-java-8.0.11.jar"
+      remote_src: yes
+
+  - name: "Allow all traffic on port 8080/tcp "
+    ufw: 
+      rule: allow
+      port: 8080
+      proto: tcp
 
   - name: "Restart guac en tomcat8 services"
     systemd:
@@ -147,6 +183,7 @@
       state: restarted
       enabled: yes
     with_items:
+      - mysql
       - guacd
       - tomcat8
       

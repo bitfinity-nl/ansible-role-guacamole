@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# Bash script to compile guacamole
-cc="gcc-6" ./configure --with-init-dir=/etc/init.d
-make CC=gcc-6
-make install
-ldconfig
-update-rc.d guacd defaults
