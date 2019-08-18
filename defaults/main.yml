@@ -1,52 +1,57 @@
 ---
-  # Title: ansible-role-guacamole
-  #
-  # Author: Luc Rutten
-  # File tasks/main.yml
-  #
-  # Description:
-  #   Apache Guacamole is a clientless remote desktop gateway.
-  #
-  # Depends on: 
-  #   MySQL 5.7
-  #
-  # Sources:
-  #   http://ftp.tudelft.nl/apache/guacamole/0.9.14/binary/
-  #   https://dev.mysql.com/downloads/connector/j/
+# Title: ansible-role-guacamole
+#
+# Author: Luc Rutten
+# File tasks/main.yml
+#
+# Description:
+#   Apache Guacamole is a clientless remote desktop gateway.
+#
+# Depends on: 
+#   MySQL 5.7
+#
+# Sources:
+#   http://ftp.tudelft.nl/apache/guacamole/0.9.14/binary/
+#   https://dev.mysql.com/downloads/connector/j/
 
-  
-  # Guacamole server
-  guac_server_src               : 'http://ftp.tudelft.nl/apache/guacamole/0.9.14/source/guacamole-server-0.9.14.tar.gz'
-  guac_server_tar               : 'guacamole-server-0.9.14.tar.gz'
-  guac_server_dir               : '/opt/ansible/projects/guacamole'
-  guac_server_dir_unpacked      : '{{ guac_server_dir }}/guacamole-server-0.9.14'
-  
-  # Guacamole client
-  guac_client_src               : 'http://ftp.tudelft.nl/apache/guacamole/0.9.14/binary/guacamole-0.9.14.war'
-  guac_client_dst               : '/var/lib/tomcat8/webapps/guacamole.war'
 
-  # Guacamole MySQL connector
-  guac_mysql_conn_src           : 'http://ftp.tudelft.nl/apache/guacamole/0.9.14/binary/guacamole-auth-jdbc-0.9.14.tar.gz'
-  guac_mysql_conn_dst           : '/etc/guacamole/extensions/'
-  guac_mysql_conn_file          : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-0.9.14/mysql/guacamole-auth-jdbc-mysql-0.9.14.jar'
-  guac_mysql_conn_src_schema    : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-0.9.14/mysql/schema/'
-  
-  guac_dbname                   : 'guacamole_db'
-  guac_dbuser                   : 'guacamole_user'
-  guac_dbpass                   : 'Guacamole123'
-  
-  # Guacamole LDAP connector
-  guac_ldap_conn_src            : 'http://ftp.tudelft.nl/apache/guacamole/0.9.14/binary/guacamole-auth-ldap-0.9.14.tar.gz'
-  guac_ldap_conn_dst            : '/etc/guacamole/extensions/'
-  guac_ldap_conn_file           : '{{ guac_ldap_conn_dst }}/guacamole-auth-ldap-0.9.14/guacamole-auth-ldap-0.9.14.jar' 
-  
-  guac_ldap_hostname            : '172.16.2.11'
-  guac_ldap_port                : '389'
-  guac_ldap_user_base_dn        : 'ou=users,ou=bitfinity,dc=bitfinity,dc=net'
-  guac_ldap_search_bind_dn      : 'cn={{ svc_guac_usr }},ou=Service Accounts,ou=Users,ou=bitfinity,dc=bitfinity,dc=net'
-  guac_ldap_search_bind_dn_pass : '{{ svc_guac_pass }}'
-  
-  # Oracle mysql connector java
-  guac_mysql_conn_java_src      : 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java_8.0.11-1ubuntu18.04_all.deb'
-  guac_mysql_conn_java_dst      : '/etc/guacamole/lib/'
-  #guac_mysql_conn_java_file     : '{{ guac_mysql_conn_java_dst }}/' 
+# Guacamole server
+guac_server_src               : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/source/guacamole-server-1.0.0.tar.gz'
+guac_server_tar               : 'guacamole-server-1.0.0.tar.gz'
+guac_server_dir               : '/opt/ansible/projects/guacamole'
+guac_server_dir_unpacked      : '{{ guac_server_dir }}/guacamole-server-1.0.0'
+
+# Guacamole client
+guac_client_src               : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-1.0.0.war'
+guac_client_dst               : '/var/lib/tomcat8/webapps/guacamole.war'
+
+# Guacamole MySQL connector
+guac_mysql_conn_src           : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-jdbc-1.0.0.tar.gz'
+guac_mysql_conn_dst           : '/etc/guacamole/extensions/'
+guac_mysql_conn_file          : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-1.0.0/mysql/guacamole-auth-jdbc-mysql-1.0.0.jar'
+guac_mysql_conn_src_schema    : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-1.0.0/mysql/schema/'
+
+guac_dbname                   : 'guacamole_db'
+guac_dbuser                   : 'guacamole_user'
+guac_dbpass                   : 'Guacamole123'
+
+# Guacamole LDAP connector
+guac_ldap_conn_src            : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-ldap-1.0.0.tar.gz'
+guac_ldap_conn_dst            : '/etc/guacamole/extensions/'
+guac_ldap_conn_file           : '{{ guac_ldap_conn_dst }}/guacamole-auth-ldap-1.0.0/guacamole-auth-ldap-1.0.0.jar' 
+
+guac_ldap_hostname            : '172.16.2.11'
+guac_ldap_port                : '389'
+guac_ldap_user_base_dn        : 'ou=users,ou=bitfinity,dc=bitfinity,dc=net'
+guac_ldap_search_bind_dn      : 'cn={{ svc_guac_usr }},ou=Service Accounts,ou=Users,ou=bitfinity,dc=bitfinity,dc=net'
+guac_ldap_search_bind_dn_pass : '{{ svc_guac_pass }}'
+
+# Oracle mysql connector java
+guac_mysql_conn_java_src      : 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java_8.0.11-1ubuntu18.04_all.deb'
+guac_mysql_conn_java_dst      : '/etc/guacamole/lib/'
+#guac_mysql_conn_java_file     : '{{ guac_mysql_conn_java_dst }}/' 
+
+# Google Authenticator
+guac_totp_auth_src            : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-totp-1.0.0.tar.gz'
+guac_totp_auth_dst            : '/etc/guacamole/extensions/'
+guac_totp_auth_file           : '{{ guac_totp_auth_dst }}/guacamole-auth-totp-1.0.0/guacamole-auth-totp-1.0.0.jar' 
