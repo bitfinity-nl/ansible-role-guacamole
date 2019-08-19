@@ -1,0 +1,56 @@
+---
+# Title: ansible-role-guacamole
+#
+# Author: Luc Rutten
+# File tasks/branding.yml
+#
+# Description:
+#   Apache Guacamole is a clientless remote desktop gateway.
+#
+# Depends on: 
+#   MySQL 5.7
+
+- name: "Install packages"
+  apt:
+    name: default-jdk
+    state: present
+
+- name: "Create branding /etc/guacamole/branding directory"
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /etc/guacamole/branding
+    - /etc/guacamole/branding/css
+    - /etc/guacamole/branding/images
+    - /etc/guacamole/branding/translations
+
+- name: "Transfer branding template to /etc/guacamole/branding"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    backup: yes
+  with_items:
+    - { src: 'guac-manifest.json.j2', dest: '/etc/guacamole/branding/guac-manifest.json' }
+    - { src: 'login-override.css.j2', dest: '/etc/guacamole/branding/css/login-override.css' }
+    - { src: 'en.json.j2', dest: '/etc/guacamole/branding/translations/en.json' } 
+
+- name: "Download default logo"
+  copy:
+    src: bitfinity_500x200.png
+    dest: /etc/guacamole/branding/images/logo-placeholder.png
+  when:
+    - guac_brd_dialog_url_logo_placeholder == ""
+
+- name: "Download custom logo (*.png) when guac_url_logo_placeholder is not empty"
+  get_url:
+    url: "{{ guac_brd_dialog_url_logo_placeholder }}"
+    dest: "/etc/guacamole/branding/images/logo-placeholder.png"
+    force: yes
+  when:
+    - guac_brd_dialog_url_logo_placeholder != ""
+
+- name: "Generate branding.jar"
+  command: jar cvf /etc/guacamole/extensions/branding.jar -C /etc/guacamole/branding/ .
+  notify:
+    - restart_guacamole

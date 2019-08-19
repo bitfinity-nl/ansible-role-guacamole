@@ -13,45 +13,107 @@
 # Sources:
 #   http://ftp.tudelft.nl/apache/guacamole/0.9.14/binary/
 #   https://dev.mysql.com/downloads/connector/j/
+#   https://github.com/Zer0CoolX/guacamole-customize-loginscreen-extension
 
 
-# Guacamole server
+# -- Guacamole server --
+#
+# Variable(S):
+#   guac_server_src               : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/source/guacamole-server-1.0.0.tar.gz'  # Set source url to guacamole server.
+#   guac_server_tar               : 'guacamole-server-1.0.0.tar.gz'                                                                                   # Set name of the tar file.
+#   guac_server_dir               : '/opt/ansible/projects/guacamole'                                                                                 # Set destination directory.
+#   guac_server_dir_unpacked      : '{{ guac_server_dir }}/guacamole-server-1.0.0'                                                                    # Set path to destination.
+#
 guac_server_src               : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/source/guacamole-server-1.0.0.tar.gz'
 guac_server_tar               : 'guacamole-server-1.0.0.tar.gz'
 guac_server_dir               : '/opt/ansible/projects/guacamole'
 guac_server_dir_unpacked      : '{{ guac_server_dir }}/guacamole-server-1.0.0'
 
-# Guacamole client
+# -- Guacamole client --
+#
+# Variable(S):
+#   guac_client_src               : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-1.0.0.war'  # Set source url to guacamole client.
+#   guac_client_dst               : '/var/lib/tomcat8/webapps/guacamole.war'                                                                # Set destination path for guacamole client.
+#
 guac_client_src               : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-1.0.0.war'
 guac_client_dst               : '/var/lib/tomcat8/webapps/guacamole.war'
 
-# Guacamole MySQL connector
+# -- Guacamole MySQL connector --
+#
+# Variable(S):
+#   guac_mysql_conn_src           : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-jdbc-1.0.0.tar.gz'   # Set source url to extension.  
+#   guac_mysql_conn_dst           : '/etc/guacamole/extensions/'                                                                                          # Set download path.
+#   guac_mysql_conn_file          : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-1.0.0/mysql/guacamole-auth-jdbc-mysql-1.0.0.jar'                       # Set path where to extract the extension.
+#   guac_mysql_conn_src_schema    : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-1.0.0/mysql/schema/'                                                   # Set path to mysql database schema.
+#   guac_dbname                   : 'guacamole_db'                                                                                                        # Set database name.
+#   guac_dbuser                   : 'guacamole_user'                                                                                                      # Set database user.
+#   guac_dbpass                   : 'Guacamole123'                                                                                                        # Set database password.
+#
 guac_mysql_conn_src           : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-jdbc-1.0.0.tar.gz'
 guac_mysql_conn_dst           : '/etc/guacamole/extensions/'
 guac_mysql_conn_file          : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-1.0.0/mysql/guacamole-auth-jdbc-mysql-1.0.0.jar'
 guac_mysql_conn_src_schema    : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-1.0.0/mysql/schema/'
-
 guac_dbname                   : 'guacamole_db'
 guac_dbuser                   : 'guacamole_user'
 guac_dbpass                   : 'Guacamole123'
 
-# Guacamole LDAP connector
+# -- Guacamole LDAP connector --
+#
+# Variable(S):
+#   guac_ldap_conn_src            : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-ldap-1.0.0.tar.gz'  # Set source url to extension.
+#   guac_ldap_conn_dst            : '/etc/guacamole/extensions/'                                                                                         # Set download path.
+#   guac_ldap_conn_file           : '{{ guac_ldap_conn_dst }}/guacamole-auth-ldap-1.0.0/guacamole-auth-ldap-1.0.0.jar'                                   # Set path where to extract extension.
+#   guac_ldap_hostname            : '172.16.2.11'                                                                                                        # Set ldap server.
+#   guac_ldap_port                : '389'                                                                                                                # Set ldap port number.
+#   guac_ldap_user_base_dn        : 'ou=users,ou=example,dc=example,dc=local'                                                                            # Set basedn.
+#   guac_ldap_search_bind_dn      : 'cn={{ svc_guac_usr }},ou=Service Accounts,ou=Users,ou=example,dc=example,dc=local'                                  # Set binddn.
+#   guac_ldap_search_bind_dn_pass : '{{ svc_guac_pass }}'                                                                                                # Set binddn password.
+#
 guac_ldap_conn_src            : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-ldap-1.0.0.tar.gz'
 guac_ldap_conn_dst            : '/etc/guacamole/extensions/'
 guac_ldap_conn_file           : '{{ guac_ldap_conn_dst }}/guacamole-auth-ldap-1.0.0/guacamole-auth-ldap-1.0.0.jar' 
-
-guac_ldap_hostname            : '172.16.2.11'
+guac_ldap_hostname            : '192.168.0.1'
 guac_ldap_port                : '389'
-guac_ldap_user_base_dn        : 'ou=users,ou=bitfinity,dc=bitfinity,dc=net'
-guac_ldap_search_bind_dn      : 'cn={{ svc_guac_usr }},ou=Service Accounts,ou=Users,ou=bitfinity,dc=bitfinity,dc=net'
+guac_ldap_user_base_dn        : 'ou=example,dc=example,dc=local'
+guac_ldap_search_bind_dn      : 'cn={{ svc_guac_usr }},ou=service accounts,ou=users,ou=example,dc=example,dc=local'
 guac_ldap_search_bind_dn_pass : '{{ svc_guac_pass }}'
 
-# Oracle mysql connector java
+# -- Oracle mysql connector java --
+#
+# Variable(S):
+#   guac_mysql_conn_java_src      : 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java_8.0.11-1ubuntu18.04_all.deb'  # Set source url to deb package.
+#   guac_mysql_conn_java_dst      : '/etc/guacamole/lib/'                                                                               # Set destination path.
+#
 guac_mysql_conn_java_src      : 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java_8.0.11-1ubuntu18.04_all.deb'
 guac_mysql_conn_java_dst      : '/etc/guacamole/lib/'
-#guac_mysql_conn_java_file     : '{{ guac_mysql_conn_java_dst }}/' 
 
-# Google Authenticator
+# -- Google Authenticator --
+#
+# Variable(S):
+#   guac_totp_auth_src            : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-totp-1.0.0.tar.gz'   # Set source url to extension.
+#   guac_totp_auth_dst            : '/etc/guacamole/extensions/'                                                                                          # Set download path.
+#   guac_totp_auth_file           : '{{ guac_totp_auth_dst }}/guacamole-auth-totp-1.0.0/guacamole-auth-totp-1.0.0.jar'                                    # Set path where to extract extension.
+#
 guac_totp_auth_src            : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-totp-1.0.0.tar.gz'
 guac_totp_auth_dst            : '/etc/guacamole/extensions/'
 guac_totp_auth_file           : '{{ guac_totp_auth_dst }}/guacamole-auth-totp-1.0.0/guacamole-auth-totp-1.0.0.jar' 
+
+# -- Branding --
+#
+# Variable(S):
+#   guac_brd_dialog_url_logo_placeholder : 'https://www.gstatic.com/webp/gallery3/2.png'  # Download url from the logo (*.png 500x200), if empty default image will be used.
+#   guac_brd_dialog_width                : '9em'                                          # Set width.
+#   guac_brd_dialog_bg_size              : '9em auto'                                     # Set Webkit background size.
+#   guac_brd_ui_bg                       : '#666'                                         # Set login-ui background.
+#   guac_brd_ui_bg_color                 : '#666'                                         # Set login-ui background-color.
+#   guac_brd_lang_name                   : 'English'                                      # Set language.
+#   guac_brd_lang_title                  : 'Title here'                                   # Set title (company name).
+#
+guac_brd_dialog_url_logo_placeholder : ''
+guac_brd_dialog_width                : '9em'
+guac_brd_dialog_bg_size              : '100% auto'
+guac_brd_ui_bg                       : '#666'
+guac_brd_ui_bg_color                 : '#666'
+guac_brd_login_ui_login_dialog       : 'white'
+guac_brd_lang_name                   : 'English'
+guac_brd_lang_title                  : 'bitfinity'

@@ -9,7 +9,7 @@
 #
 # Depends on: 
 #   MySQL 5.7
-
+  
 - name: "Create ansible and guacamole directory structure"
   file:
     path: "{{ item }}"
@@ -189,4 +189,6 @@
     - mysql
     - guacd
     - tomcat8
-    
+
+- name: "import branding"
+  import_tasks: branding.yml

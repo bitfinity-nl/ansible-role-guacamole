@@ -1,0 +1,20 @@
+---
+# Title: ansible-role-guacamole
+#
+# Author: Luc Rutten
+# File tasks/main2.yml
+#
+# Description:
+#   Apache Guacamole is a clientless remote desktop gateway.
+#
+# Depends on: 
+#   MySQL 5.7
+
+- name: "restart_guacamole"
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  with_items:
+    - guacd
+    - tomcat8
