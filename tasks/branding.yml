@@ -37,7 +37,7 @@
 
 - name: "Download default logo"
   copy:
-    src: bitfinity_500x200.png
+    src: bitfinity_200x200.png
     dest: /etc/guacamole/branding/images/logo-placeholder.png
   when:
     - guac_brd_dialog_url_logo_placeholder == ""
