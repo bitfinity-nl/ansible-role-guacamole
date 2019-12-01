@@ -1,0 +1,49 @@
+---
+# Title: ansible-role-guacamole
+#
+# Author: Luc Rutten
+# File tasks/apach2.yml
+#
+# Description:
+#   Apache Guacamole is a clientless remote desktop gateway.
+
+#- name: "Install packages"
+#  apt:
+#    name: "{{ packages }}"
+#    state: "present"
+#  vars:
+#    packages:
+#    - apache2
+#    - libapache2-mod-proxy-html
+
+- name: "Apache2 enable SSL module"
+  apache2_module:
+    state: present
+    name: "{{ item }}"
+  with_items:
+    - log_config
+    - proxy
+    - proxy_http
+    - proxy_wstunnel
+    - ssl
+
+- name: "Transfer templates"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: 'apache2/guacamole.conf.j2', dest: '/etc/apache2/sites-available/guacamole.conf' }
+
+- name: "Disable "
+  command: "a2dissite {{ item }}"
+  with_items:
+    - 000-default.conf
+    - default-ssl.conf 
+  notify:
+    - restart_apache2
+
+- name: "Enable guacamole.conf"
+  command: a2ensite guacamole.conf
+  notify:
+    - restart_apache2
+

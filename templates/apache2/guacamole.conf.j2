@@ -1,0 +1,21 @@
+<VirtualHost *:80>
+
+  ServerName {{ guac_apache2_domain }}
+  Redirect permanent / https://{{ guac_apache2_domain }}/
+
+</VirtualHost>
+
+<VirtualHost *:443>
+
+  ServerName {{ guac_apache2_domain }}
+  ProxyPreserveHost Off
+
+  SSLEngine on
+  SSLProxyEngine On
+  SSLCertificateFile {{ guac_apache2_cert_file }}
+  SSLCertificateKeyFile {{ guac_apache2_cert_keyfile }}
+
+  ProxyPass / http://localhost:8080/guacamole/
+  ProxyPassReverse / http://localhost:8080/guacamole/
+
+</VirtualHost>

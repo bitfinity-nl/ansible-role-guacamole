@@ -18,3 +18,10 @@
   with_items:
     - guacd
     - tomcat8
+
+- name: "Restart and enable apache2"
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+    name: apache2

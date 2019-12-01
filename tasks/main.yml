@@ -152,6 +152,15 @@
     - { src: '{{ guac_ldap_conn_file }}', dest: '{{ guac_ldap_conn_dst }}' }
     - { src: '{{ guac_totp_auth_file }}', dest: '{{ guac_totp_auth_dst }}' }
 
+- name: "Remove 2Factor authentication when guac_totp_auth_state = 'disabled'"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_fileglob:
+    - "{{ guac_totp_auth_dst }}/guacamole-auth-totp*"
+  when:
+    - guac_totp_auth_state == 'disabled'
+
 - name: "Import MySQL database schemas"
   mysql_db:
     state: import
@@ -192,3 +201,6 @@
 
 - name: "import branding"
   import_tasks: branding.yml
+
+- name: "import apache2"
+  import_tasks: apache2.yml

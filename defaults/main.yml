@@ -14,7 +14,7 @@
 #   http://ftp.tudelft.nl/apache/guacamole/0.9.14/binary/
 #   https://dev.mysql.com/downloads/connector/j/
 #   https://github.com/Zer0CoolX/guacamole-customize-loginscreen-extension
-
+#   https://www.cb-net.co.uk/linux/debian-8-6-proxy-guacamole-via-apache2-using-https-and-fail2ban/
 
 # -- Guacamole server --
 #
@@ -29,6 +29,7 @@ guac_server_tar               : 'guacamole-server-1.0.0.tar.gz'
 guac_server_dir               : '/opt/ansible/projects/guacamole'
 guac_server_dir_unpacked      : '{{ guac_server_dir }}/guacamole-server-1.0.0'
 
+
 # -- Guacamole client --
 #
 # Variable(S):
@@ -37,6 +38,7 @@ guac_server_dir_unpacked      : '{{ guac_server_dir }}/guacamole-server-1.0.0'
 #
 guac_client_src               : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-1.0.0.war'
 guac_client_dst               : '/var/lib/tomcat8/webapps/guacamole.war'
+
 
 # -- Guacamole MySQL connector --
 #
@@ -56,6 +58,7 @@ guac_mysql_conn_src_schema    : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-1
 guac_dbname                   : 'guacamole_db'
 guac_dbuser                   : 'guacamole_user'
 guac_dbpass                   : 'Guacamole123'
+
 
 # -- Guacamole LDAP connector --
 #
@@ -78,6 +81,7 @@ guac_ldap_user_base_dn        : 'ou=example,dc=example,dc=local'
 guac_ldap_search_bind_dn      : 'cn={{ svc_guac_usr }},ou=service accounts,ou=users,ou=example,dc=example,dc=local'
 guac_ldap_search_bind_dn_pass : '{{ svc_guac_pass }}'
 
+
 # -- Oracle mysql connector java --
 #
 # Variable(S):
@@ -87,16 +91,20 @@ guac_ldap_search_bind_dn_pass : '{{ svc_guac_pass }}'
 guac_mysql_conn_java_src      : 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java_8.0.11-1ubuntu18.04_all.deb'
 guac_mysql_conn_java_dst      : '/etc/guacamole/lib/'
 
+
 # -- Google Authenticator --
 #
 # Variable(S):
+#   guac_totp_auth_state          : 'enabled'                                                                                                             # State enabled or disabled.
 #   guac_totp_auth_src            : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-totp-1.0.0.tar.gz'   # Set source url to extension.
 #   guac_totp_auth_dst            : '/etc/guacamole/extensions/'                                                                                          # Set download path.
 #   guac_totp_auth_file           : '{{ guac_totp_auth_dst }}/guacamole-auth-totp-1.0.0/guacamole-auth-totp-1.0.0.jar'                                    # Set path where to extract extension.
 #
+guac_totp_auth_state          : 'disabled'
 guac_totp_auth_src            : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-totp-1.0.0.tar.gz'
 guac_totp_auth_dst            : '/etc/guacamole/extensions/'
 guac_totp_auth_file           : '{{ guac_totp_auth_dst }}/guacamole-auth-totp-1.0.0/guacamole-auth-totp-1.0.0.jar' 
+
 
 # -- Branding --
 #
@@ -117,3 +125,17 @@ guac_brd_ui_bg_color                 : '#666'
 guac_brd_login_ui_login_dialog       : 'white'
 guac_brd_lang_name                   : 'English'
 guac_brd_lang_title                  : 'bitfinity'
+
+
+# -- Apache2 reverse proxy --
+#
+# Variable(s):
+#   guac_apache2_domain         : 'portal.example.com'
+#   guac_apache2_cert_file      : '/etc/apache2/ssl/2_guacamole.domain.com.crt'
+#   guac_apache2_cert_keyfile   : '/etc/apache2/ssl/guac.key'
+#   guac_apache2_cert_chainfile : '/etc/apache2/ssl/1_root_bundle.crt'
+#
+guac_apache2_domain         : 'portal.bitfinity.lab'
+guac_apache2_cert_file      : '{{ def_ap_sslcertificatefile }}'
+guac_apache2_cert_keyfile   : '{{ def_ap_sslcertificatekeyfile }}'
+guac_apache2_cert_chainfile : '{{ def_ap_sslcertificatechainfile }}'
