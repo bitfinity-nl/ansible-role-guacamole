@@ -7,13 +7,13 @@
 # Description:
 #   Apache Guacamole is a clientless remote desktop gateway.
 
-#- name: "Install packages"
-#  apt:
-#    name: "{{ packages }}"
-#    state: "present"
-#  vars:
-#    packages:
-#    - apache2
+- name: "Install packages"
+  apt:
+    name: "{{ packages }}"
+    state: "present"
+  vars:
+    packages:
+    - apache2
 #    - libapache2-mod-proxy-html
 
 - name: "Apache2 enable SSL module"
