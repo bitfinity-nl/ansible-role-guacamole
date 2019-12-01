@@ -47,3 +47,11 @@
   notify:
     - restart_apache2
 
+- name: "Configure Firewall"
+  ufw:
+    rule: allow
+    proto: tcp
+    port: "{{ item }}"
+  with_items:
+    - "80"
+    - "443"
