@@ -55,6 +55,12 @@
     - libssl-dev
     - libvorbis-dev
     - libwebp-dev
+    - libcairo2-dev
+    - libjpeg-turbo8-dev
+    - libjpeg62-dev
+    - libpng12-dev
+    - libtool-bin
+    - libossp-uuid-dev
 #    - libcairo2-dev
 #    - libjpeg-turbo8-dev
 #    - libpng12-dev
