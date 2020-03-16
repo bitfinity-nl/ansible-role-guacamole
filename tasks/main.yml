@@ -42,24 +42,38 @@
     - build-essential 
     - gcc-6
     - g++-6
-    - libcairo2-dev
-    - libjpeg-turbo8-dev
-    - libpng12-dev
-    - libossp-uuid-dev
     - libavcodec-dev
     - libavutil-dev
     - libswscale-dev
-    - libfreerdp-dev
+    - freerdp2-dev
     - libpango1.0-dev
     - libssh2-1-dev
     - libtelnet-dev
     - libvncserver-dev
+    - libwebsockets-dev
     - libpulse-dev
     - libssl-dev
     - libvorbis-dev
     - libwebp-dev
-    - tomcat8 
-    - freerdp-x11
+    
+#    - libcairo2-dev
+#    - libjpeg-turbo8-dev
+#    - libpng12-dev
+#    - libossp-uuid-dev
+#    - libavcodec-dev
+#    - libavutil-dev
+#    - libswscale-dev
+#    - libfreerdp-dev
+#    - libpango1.0-dev
+#    - libssh2-1-dev
+#    - libtelnet-dev
+#    - libvncserver-dev
+#    - libpulse-dev
+#    - libssl-dev
+#    - libvorbis-dev
+#    - libwebp-dev
+#    - tomcat8 
+#    - freerdp-x11
     - ghostscript
     - jq
     - haveged
