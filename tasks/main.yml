@@ -55,7 +55,6 @@
     - libssl-dev
     - libvorbis-dev
     - libwebp-dev
-    
 #    - libcairo2-dev
 #    - libjpeg-turbo8-dev
 #    - libpng12-dev
