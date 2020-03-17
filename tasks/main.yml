@@ -208,15 +208,3 @@
 
 - name: "import apache2"
   import_tasks: apache2.yml
-
-- name: "Workaround for (audio) rediction RDP"
-  file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    state: link
-  with_items:
-    - { src: '/usr/local/lib/freerdp/guacdr-client.so', dest: '/usr/lib/x86_64-linux-gnu/freerdp/guacdr-client.so' }
-    - { src: '/usr/local/lib/freerdp/guacsnd-client.so', dest: '/usr/lib/x86_64-linux-gnu/freerdp/guacsnd-client.so' }
-    - { src: '/usr/local/lib/freerdp/guacsvc-client.so', dest: '/usr/lib/x86_64-linux-gnu/freerdp/guacsvc-client.so' }
-    
-
