@@ -53,8 +53,7 @@ guac_client_dst               : '/var/lib/tomcat8/webapps/guacamole.war'
 #
 guac_mysql_conn_src           : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.1.0/binary/guacamole-auth-jdbc-1.1.0.tar.gz'
 guac_mysql_conn_dst           : '/etc/guacamole/extensions/'
-guac_mysql_conn_file          : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-1.1.0/mysql/guacamole-auth-jdbc-mysql-1.1.0.jar'
-guac_mysql_conn_src_schema    : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-1.1.0/mysql/schema/'
+guac_mysql_conn_src_schema    : '{{ guac_mysql_conn_dst }}/guacamole-auth-jdbc-1.1.0/mysql/schema/guacamole-auth-jdbc-1.1.0.jar'
 guac_dbname                   : 'guacamole_db'
 guac_dbuser                   : 'guacamole_user'
 guac_dbpass                   : 'Guacamole123'
@@ -88,7 +87,7 @@ guac_ldap_search_bind_dn_pass : '{{ svc_guac_pass }}'
 #   guac_mysql_conn_java_src      : 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java_8.0.11-1ubuntu18.04_all.deb'  # Set source url to deb package.
 #   guac_mysql_conn_java_dst      : '/etc/guacamole/lib/'                                                                               # Set destination path.
 #
-guac_mysql_conn_java_src      : 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java_8.0.11-1ubuntu18.04_all.deb'
+guac_mysql_conn_java_src      : 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java_8.0.19-1ubuntu18.04_all.deb'
 guac_mysql_conn_java_dst      : '/etc/guacamole/lib/'
 
 
