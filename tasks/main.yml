@@ -212,7 +212,8 @@
 - name: "Workaround for (audio) rediction RDP"
   file:
     src: "{{ item.src }}"
-    dest: "{{ item.dest }}" 
+    dest: "{{ item.dest }}"
+    state: link
   with_items:
     - { src: '/usr/local/lib/freerdp/guacdr-client.so', dest: '/usr/lib/x86_64-linux-gnu/freerdp/' }
     - { src: '/usr/local/lib/freerdp/guacsnd-client.so', dest: '/usr/lib/x86_64-linux-gnu/freerdp/' }
