@@ -180,10 +180,10 @@
   apt:
     deb: "{{ guac_mysql_conn_java_src }}"
 
-- name: "Copy from /usr/share/java/mysql-connector-java-8.0.11.jar to {{ guac_mysql_conn_java_dst }}" 
+- name: "Copy from /usr/share/java/mysql-connector-java-8.0.19.jar to {{ guac_mysql_conn_java_dst }}" 
   copy:
-    src: /usr/share/java/mysql-connector-java-8.0.11.jar
-    dest: "{{ guac_mysql_conn_java_dst }}/mysql-connector-java-8.0.11.jar"
+    src: /usr/share/java/mysql-connector-java-8.0.19.jar
+    dest: "{{ guac_mysql_conn_java_dst }}/mysql-connector-java-8.0.19.jar"
     remote_src: yes
 
 - name: "Allow all traffic on port 8080/tcp "
