@@ -42,6 +42,17 @@
     - build-essential 
     - gcc-6
     - g++-6
+    - ghostscript
+    - jq
+    - haveged
+    # Required dependencies
+    - libcairo2-dev
+    - libjpeg-turbo8-dev
+    - libjpeg62-dev
+    - libpng12-dev
+    - libtool-bin
+    - libossp-uuid-dev
+    # Optional dependencies
     - libavcodec-dev
     - libavutil-dev
     - libswscale-dev
@@ -55,34 +66,7 @@
     - libssl-dev
     - libvorbis-dev
     - libwebp-dev
-    - libcairo2-dev
-    - libjpeg-turbo8-dev
-    - libjpeg62-dev
-    - libpng12-dev
-    - libtool-bin
-    - libossp-uuid-dev
-#    - libcairo2-dev
-#    - libjpeg-turbo8-dev
-#    - libpng12-dev
-#    - libossp-uuid-dev
-#    - libavcodec-dev
-#    - libavutil-dev
-#    - libswscale-dev
-#    - libfreerdp-dev
-#    - libpango1.0-dev
-#    - libssh2-1-dev
-#    - libtelnet-dev
-#    - libvncserver-dev
-#    - libpulse-dev
-#    - libssl-dev
-#    - libvorbis-dev
-#    - libwebp-dev
-#    - tomcat8 
-#    - freerdp-x11
-    - ghostscript
-    - jq
-    - haveged
-    
+  
 - name: "stop tomcat service"
   systemd:
     name: tomcat8
