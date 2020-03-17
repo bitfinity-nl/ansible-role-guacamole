@@ -45,6 +45,7 @@
     - ghostscript
     - jq
     - haveged
+    - tomcat8
     # Required dependencies
     - libcairo2-dev
     - libjpeg-turbo8-dev
