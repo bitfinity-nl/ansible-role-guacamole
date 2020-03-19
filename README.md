@@ -105,6 +105,7 @@ Example Playbook
         guac_ldap_user_base_dn        : 'ou=users,ou=example,dc=example,dc=local'
         guac_ldap_search_bind_dn      : 'cn=administrator,cn=users,dc=example,dc=local'
         guac_ldap_search_bind_dn_pass : 'YourPassword'
+        guac_ldap_user_search_filter  : '(memberOf=cn=ras_guac_users,ou=ras,ou=resources,ou=example,dc=example,dc=local)'
 
       roles:
         - ansible-role-mysql-server-5.7
