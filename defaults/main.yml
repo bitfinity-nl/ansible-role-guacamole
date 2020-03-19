@@ -71,6 +71,7 @@ guac_dbpass                   : 'Guacamole123'
 #   guac_ldap_user_base_dn        : 'ou=users,ou=example,dc=example,dc=local'                                                                            # Set basedn.
 #   guac_ldap_search_bind_dn      : 'cn={{ svc_guac_usr }},ou=Service Accounts,ou=Users,ou=example,dc=example,dc=local'                                  # Set binddn.
 #   guac_ldap_search_bind_dn_pass : '{{ svc_guac_pass }}'                                                                                                # Set binddn password.
+#   guac_ldap_user_search_filter  : '(memberOf=cn=ras_guac_users,ou=ras,ou=resources,ou=example,dc=example,dc=local)'                                    # Set memberoff filter.
 #
 guac_ldap_conn_src            : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.1.0/binary/guacamole-auth-ldap-1.1.0.tar.gz'
 guac_ldap_conn_dst            : '/etc/guacamole/extensions/'
@@ -80,6 +81,7 @@ guac_ldap_port                : '389'
 guac_ldap_user_base_dn        : 'ou=example,dc=example,dc=local'
 guac_ldap_search_bind_dn      : 'cn={{ svc_guac_usr }},ou=service accounts,ou=users,ou=example,dc=example,dc=local'
 guac_ldap_search_bind_dn_pass : '{{ svc_guac_pass }}'
+guac_ldap_user_search_filter  : '(memberOf=cn=ras_guac_users,ou=ras,ou=resources,ou=example,dc=example,dc=local)'
 
 
 # -- Oracle mysql connector java --
