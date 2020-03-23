@@ -23,11 +23,13 @@
 #   guac_server_tar               : 'guacamole-server-1.0.0.tar.gz'                                                                                   # Set name of the tar file.
 #   guac_server_dir               : '/opt/ansible/projects/guacamole'                                                                                 # Set destination directory.
 #   guac_server_dir_unpacked      : '{{ guac_server_dir }}/guacamole-server-1.0.0'                                                                    # Set path to destination.
+#   guac_api_session_timeout      : '60'                                                                                                              # Set session timeout (default=60min).
 #
 guac_server_src               : 'http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.1.0/source/guacamole-server-1.1.0.tar.gz'
 guac_server_tar               : 'guacamole-server-1.1.0.tar.gz'
 guac_server_dir               : '/opt/ansible/projects/guacamole'
 guac_server_dir_unpacked      : '{{ guac_server_dir }}/guacamole-server-1.1.0'
+guac_api_session_timeout      : '60'
 
 
 # -- Guacamole client --
